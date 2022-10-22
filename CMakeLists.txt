@@ -32,7 +32,7 @@ set(SOURCE_FILES
 add_executable(OpenGL_cmake src/main.cpp ${SOURCE_FILES})
 
 target_include_directories(OpenGL_cmake
-        PRIVATE "${CMAKE_CURRENT_BINARY_DIR}"
+        PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/src"
         PRIVATE "src"
         PRIVATE "third_party/stb_image"
         PRIVATE "third_party/imgui")
