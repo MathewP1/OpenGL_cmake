@@ -19,15 +19,17 @@ set(RESOURCE_PATH "${PROJECT_SOURCE_DIR}/res/")
 configure_file(src/config.h.in src/config.h)
 
 set(SOURCE_FILES
-        "src/gl_util.h" "src/gl_util.cpp"
-        "src/index_buffer.h" "src/index_buffer.cpp"
-        "src/renderer.h" "src/renderer.cpp"
-        "src/shader.h" "src/shader.cpp"
-        "src/texture.h" "src/texture.cpp"
-        "src/vertex_array.h" "src/vertex_array.cpp"
-        "src/vertex_buffer.h" "src/vertex_buffer.cpp"
-        "src/vertex_buffer_layout.h" "src/vertex_buffer_layout.cpp"
-        )
+        "src/renderer/gl_util.h" "src/renderer/gl_util.cpp"
+        "src/renderer/index_buffer.h" "src/renderer/index_buffer.cpp"
+        "src/renderer/renderer.h" "src/renderer/renderer.cpp"
+        "src/renderer/shader.h" "src/renderer/shader.cpp"
+        "src/renderer/texture.h" "src/renderer/texture.cpp"
+        "src/renderer/vertex_array.h" "src/renderer/vertex_array.cpp"
+        "src/renderer/vertex_buffer.h" "src/renderer/vertex_buffer.cpp"
+        "src/renderer/vertex_buffer_layout.h" "src/renderer/vertex_buffer_layout.cpp"
+        src/scene/scene.h
+        src/scene/scene_menu.h src/scene/scene_menu.cpp
+        src/scene/textured_logos_scene.h src/scene/textured_logos_scene.cpp)
 
 add_executable(OpenGL_cmake src/main.cpp ${SOURCE_FILES})
 

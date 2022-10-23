@@ -19,7 +19,6 @@ class VertexBufferLayout {
 
   VertexBufferLayout();
 
-
   const std::vector<Element>& GetElements() const;
   const unsigned int GetStride() const;
 

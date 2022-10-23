@@ -23,7 +23,6 @@ class Shader {
                     float v4);
   void SetUniformMat4(const std::string& name, const glm::mat4& matrix);
 
-
  private:
   unsigned int renderer_id_ = 0;
   std::string file_path_;

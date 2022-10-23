@@ -20,7 +20,6 @@ class Texture {
   int GetWidth() const;
   int GetHeight() const;
 
-
  private:
   unsigned int renderer_id_ = 0;
   std::string file_path_;
