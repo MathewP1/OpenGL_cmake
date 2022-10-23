@@ -9,13 +9,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #include "renderer/gl_util.h"
-#include "renderer/index_buffer.h"
 #include "renderer/renderer.h"
-#include "renderer/shader.h"
-#include "renderer/texture.h"
-#include "renderer/vertex_array.h"
-#include "renderer/vertex_buffer_layout.h"
-#include "scene/textured_logos_scene.h"
+#include "scene/triangle_scene.h"
 
 int main(void) {
   GLFWwindow* window;
@@ -31,7 +26,10 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
-  window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
+  float window_width = 800;
+  float window_height = 600;
+  window =
+      glfwCreateWindow(window_width, window_height, "Hello World", NULL, NULL);
   if (!window) {
     glfwTerminate();
     return -1;
@@ -61,8 +59,9 @@ int main(void) {
 
   Renderer renderer;
   // set up scene
-  TexturedLogosScene scene;
+  //  TexturedLogosScene scene;
 
+  TriangleScene scene(window_width, window_height);
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window)) {
     /* Render here */

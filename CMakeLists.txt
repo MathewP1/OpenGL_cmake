@@ -29,7 +29,7 @@ set(SOURCE_FILES
         "src/renderer/vertex_buffer_layout.h" "src/renderer/vertex_buffer_layout.cpp"
         src/scene/scene.h
         src/scene/scene_menu.h src/scene/scene_menu.cpp
-        src/scene/textured_logos_scene.h src/scene/textured_logos_scene.cpp)
+        src/scene/textured_logos_scene.h src/scene/textured_logos_scene.cpp src/scene/triangle_scene.h src/scene/triangle_scene.cpp)
 
 add_executable(OpenGL_cmake src/main.cpp ${SOURCE_FILES})
 
