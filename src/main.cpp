@@ -66,6 +66,7 @@ int main(void) {
   glfwSetWindowUserPointer(window, &scene);
   glfwSetFramebufferSizeCallback(
       window, [](GLFWwindow* window, int width, int height) {
+        glViewport(0, 0, width, height);
         auto& scene =
             *static_cast<TexturedCubeScene*>(glfwGetWindowUserPointer(window));
         scene.OnWindowResizedCallback(width, height);
