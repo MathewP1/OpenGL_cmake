@@ -17,6 +17,8 @@ namespace gl {
 void ClearError();
 
 bool Call(const char *function, const char *file, int line);
+
+unsigned int CreateShader(const std::string& vertex_source, const std::string& fragment_source);
 }  // namespace gl
 
 #endif

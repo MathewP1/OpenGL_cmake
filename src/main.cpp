@@ -10,7 +10,10 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "renderer/gl_util.h"
 #include "renderer/renderer.h"
+#include "scene/cube_scene.h"
+#include "scene/textured_cube_scene.h"
 #include "scene/triangle_scene.h"
+
 
 int main(void) {
   GLFWwindow* window;
@@ -26,8 +29,8 @@ int main(void) {
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   /* Create a windowed mode window and its OpenGL context */
-  float window_width = 800;
-  float window_height = 600;
+  float window_width = 1500;
+  float window_height = 1200;
   window =
       glfwCreateWindow(window_width, window_height, "Hello World", NULL, NULL);
   if (!window) {
@@ -46,6 +49,7 @@ int main(void) {
 
   GL_CALL(glEnable(GL_BLEND));
   GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
+  GL_CALL(glClearColor(0.2f, 0.02f, 0.2f, 1.0f));
 
   std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
   std::cout << "Resources directory: " << RESOURCE_PATH << std::endl;
@@ -57,21 +61,29 @@ int main(void) {
   ImGui_ImplOpenGL3_Init(glsl_version);
   ImGui::StyleColorsDark();
 
-  Renderer renderer;
-  // set up scene
-  //  TexturedLogosScene scene;
+  TexturedCubeScene scene(window_width, window_height);
 
-  TriangleScene scene(window_width, window_height);
+  glfwSetWindowUserPointer(window, &scene);
+  glfwSetFramebufferSizeCallback(
+      window, [](GLFWwindow* window, int width, int height) {
+        auto& scene =
+            *static_cast<TexturedCubeScene*>(glfwGetWindowUserPointer(window));
+        scene.OnWindowResizedCallback(width, height);
+      });
+//  TriangleScene scene(window_width, window_height);
+
+
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window)) {
     /* Render here */
-    renderer.Clear();
+//    GL_CALL(glClear(GL_COLOR_BUFFER_BIT));
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    scene.OnUpdate(0.0f);
+    scene.OnUpdate(1.0f / 60.0f);
     scene.OnRender();
     ImGui::Begin("Scene");
     scene.OnImGuiRender();
