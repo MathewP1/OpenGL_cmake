@@ -27,6 +27,7 @@ class TexturedCubeScene : public Scene {
   bool size_changed_ = false;
   unsigned int vb_, ib_, vbo_, shader_, texture_, texture1_;
   bool amogus_ = false;
+  bool wireframe_ = false;
 };
 
 #endif  // OPENGL_CMAKE_TEXTURED_CUBE_SCENE_H

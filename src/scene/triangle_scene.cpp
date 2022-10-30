@@ -51,9 +51,9 @@ void TriangleScene::OnRender() {
 void TriangleScene::OnImGuiRender() {
   ImGui::SliderFloat3("view translation", &translation_.x, -10.0f, 10.0f);
   ImGui::SliderFloat3("view scale", &scale_.x, -10.0f, 10.0f);
-  ImGui::SliderFloat("rotation x", &rotate_x_, -90.0f, 90.0f);
-  ImGui::SliderFloat("rotation y", &rotate_y_, -90.0f, 90.0f);
-  ImGui::SliderFloat("rotation z", &rotate_z_, -90.0f, 90.0f);
+  ImGui::SliderFloat("rotation x", &rotate_x_, -10.0f, 10.0f);
+  ImGui::SliderFloat("rotation y", &rotate_y_, -1.0f, 1.0f);
+  ImGui::SliderFloat("rotation z", &rotate_z_, -10.0f, 10.0f);
   ImGui::Text("Application average %.3f ms/frame (%.1f FPS)",
               1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 }

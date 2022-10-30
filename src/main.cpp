@@ -11,9 +11,9 @@
 #include "renderer/gl_util.h"
 #include "renderer/renderer.h"
 #include "scene/cube_scene.h"
+#include "scene/dynamic_buffer_scene.h"
 #include "scene/textured_cube_scene.h"
 #include "scene/triangle_scene.h"
-
 
 int main(void) {
   GLFWwindow* window;
@@ -49,7 +49,8 @@ int main(void) {
 
   GL_CALL(glEnable(GL_BLEND));
   GL_CALL(glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA));
-  GL_CALL(glClearColor(0.2f, 0.02f, 0.2f, 1.0f));
+//  GL_CALL(glClearColor(0.2f, 0.02f, 0.2f, 1.0f));
+  glClearColor( 0, 0, 0, 0.0);
 
   std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
   std::cout << "Resources directory: " << RESOURCE_PATH << std::endl;
@@ -73,6 +74,17 @@ int main(void) {
       });
 //  TriangleScene scene(window_width, window_height);
 
+//  glfwSetCursorPosCallback(window, [](GLFWwindow* window, double x, double y) {
+//    auto& scene =
+//        *static_cast<DynamicBufferScene*>(glfwGetWindowUserPointer(window));
+//    scene.OnMouseMoveCallback(x, y);
+//  });
+//
+//  glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+//    auto& scene =
+//        *static_cast<DynamicBufferScene*>(glfwGetWindowUserPointer(window));
+//    scene.OnKeyboardPressCallback(key, action);
+//  });
 
   /* Loop until the user closes the window */
   while (!glfwWindowShouldClose(window)) {

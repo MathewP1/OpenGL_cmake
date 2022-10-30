@@ -16,17 +16,17 @@
 TexturedCubeScene::TexturedCubeScene(float width, float height)
     : width_(width), height_(height),
       projection_(glm::perspective(glm::radians(45.0f), width / height, 0.1f, 100.0f)),
-      view_(glm::lookAt(glm::vec3(4, 3, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0))),
+      view_(glm::lookAt(glm::vec3(3, 0, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0))),
       model_(1.0f){
   float vertices[] = {
       // front
-      -1.0, -1.0,  1.0, 0.0, 0.0,
-      1.0, -1.0,  1.0, 1.0, 0.0,
-      1.0,  1.0,  1.0, 1.0, 1.0,
-      -1.0,  1.0,  1.0, 0.0, 1.0,
+      -1.0, -1.0,  0, 0.0, 0.0,
+      1.0, -1.0,  0, 1.0, 0.0,
+      1.0,  1.0,  0, 1.0, 1.0,
+      -1.0,  1.0,  0, 0.0, 1.0,
       // top
-      -1.0,  1.0,  1.0, 0.0, 0.0,
-      1.0,  1.0,  1.0, 1.0, 0.0,
+      -1.0,  1.0,  0, 0.0, 0.0,
+      1.0,  1.0,  0, 1.0, 0.0,
       1.0,  1.0, -1.0, 1.0, 1.0,
       -1.0,  1.0, -1.0, 0.0, 1.0,
       // back
@@ -37,18 +37,18 @@ TexturedCubeScene::TexturedCubeScene(float width, float height)
       // bottom
       -1.0, -1.0, -1.0, 0.0, 0.0,
       1.0, -1.0, -1.0, 1.0, 0.0,
-      1.0, -1.0,  1.0, 1.0, 1.0,
-      -1.0, -1.0,  1.0, 0.0, 1.0,
+      1.0, -1.0,  0, 1.0, 1.0,
+      -1.0, -1.0,  0, 0.0, 1.0,
       // left
       -1.0, -1.0, -1.0, 0.0, 0.0,
-      -1.0, -1.0,  1.0, 1.0, 0.0,
-      -1.0,  1.0,  1.0, 1.0, 1.0,
+      -1.0, -1.0,  0, 1.0, 0.0,
+      -1.0,  1.0,  0, 1.0, 1.0,
       -1.0,  1.0, -1.0, 0.0, 1.0,
       // right
-      1.0, -1.0,  1.0, 0.0, 0.0,
+      1.0, -1.0,  0, 0.0, 0.0,
       1.0, -1.0, -1.0, 1.0, 0.0,
       1.0,  1.0, -1.0, 1.0, 1.0,
-      1.0,  1.0,  1.0, 0.0, 1.0,
+      1.0,  1.0,  0, 0.0, 1.0,
   };
 
   unsigned int indices[] = {
@@ -93,7 +93,7 @@ TexturedCubeScene::TexturedCubeScene(float width, float height)
   GL_CALL(glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW));
 
   std::string resources(RESOURCE_PATH);
-  shader_ = gl::CreateShader(resources + "shaders/cube_vertex.glsl", resources + "shaders/cube_fragment.glsl");
+  shader_ = gl::CreateShader(resources + "shaders/textured_cube_vertex.glsl", resources + "shaders/textured_cube_fragment.glsl");
 
   // Load textures
   std::string texture_path(resources + "textures/logo.png");
@@ -134,7 +134,7 @@ TexturedCubeScene::TexturedCubeScene(float width, float height)
 
 
   glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_LESS);
+  glDepthFunc(GL_LEQUAL);
 }
 
 void TexturedCubeScene::OnUpdate(float deltaTime) {
@@ -143,11 +143,19 @@ void TexturedCubeScene::OnUpdate(float deltaTime) {
     // TODO: recalculate the projection matrix (or view?)
     projection_ = glm::perspective(glm::radians(45.0f), width_ / height_, 0.1f, 100.0f);
   }
-
-  float ang_speed = 15;
-  model_ *= glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed) * deltaTime, glm::vec3(1, 0, 0)) *
-            glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed+5) * deltaTime, glm::vec3(0, 1, 0)) *
-            glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed+10) * deltaTime, glm::vec3(0, 0, 1));
+  view_translation_ = glm::translate(glm::mat4(1.0f), translation_);
+  view_scale_ = glm::scale(glm::mat4(1.0f), scale_);
+  glm::vec3 rotation_x_axis(1.0f, 0.0f, 0.0f);
+  glm::vec3 rotation_y_axis(0.0f, 1.0f, 0.0f);
+  glm::vec3 rotation_z_axis(0.0f, 0.0f, 1.0f);
+  auto x = glm::rotate(glm::mat4(1.0f), rotate_x_, rotation_x_axis);
+  auto y = glm::rotate(x, rotate_y_, rotation_y_axis);
+  view_rotation_ = glm::rotate(y, rotate_z_, rotation_z_axis);
+  view_ = view_translation_ * view_rotation_ * view_scale_;
+//  float ang_speed = 15;
+//  model_ *= glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed) * deltaTime, glm::vec3(1, 0, 0)) *
+//            glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed+5) * deltaTime, glm::vec3(0, 1, 0)) *
+//            glm::rotate(glm::mat4(1.0f), glm::radians(ang_speed+10) * deltaTime, glm::vec3(0, 0, 1));
 }
 
 void TexturedCubeScene::OnRender() {
@@ -163,6 +171,12 @@ void TexturedCubeScene::OnRender() {
   unsigned int loc = glGetUniformLocation(shader_, "u_MVP");
   GL_CALL(glUniformMatrix4fv(loc, 1, GL_FALSE, &mvp[0][0]));
 
+  if (wireframe_) {
+    GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_LINE));
+  } else {
+    GL_CALL(glPolygonMode(GL_FRONT_AND_BACK, GL_FILL));
+  }
+
   GL_CALL(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ib_));
   int size;
   glGetBufferParameteriv(GL_ELEMENT_ARRAY_BUFFER, GL_BUFFER_SIZE, &size);
@@ -170,6 +184,13 @@ void TexturedCubeScene::OnRender() {
 }
 void TexturedCubeScene::OnImGuiRender() {
   ImGui::Checkbox("Amogus mode", &amogus_);
+  ImGui::Checkbox("wireframe", &wireframe_);
+
+  ImGui::SliderFloat3("view translation", &translation_.x, -10.0f, 10.0f);
+  ImGui::SliderFloat3("view scale", &scale_.x, -10.0f, 10.0f);
+  ImGui::SliderFloat("rotation x", &rotate_x_, -10.0f, 10.0f);
+  ImGui::SliderFloat("rotation y", &rotate_y_, -1.0f, 1.0f);
+  ImGui::SliderFloat("rotation z", &rotate_z_, -10.0f, 10.0f);
 }
 
 void TexturedCubeScene::OnWindowResizedCallback(int width, int height) {
